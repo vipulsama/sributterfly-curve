@@ -44,28 +44,17 @@
         #longMessage {
             position: absolute;
             top: 75%;
-            width: 100%;
-            font-size: 24px;
+            width: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
             opacity: 0;
             transition: opacity 2s ease-in-out;
             color: white;
             font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            word-wrap: break-word;
         }
-        #longMessageContainer {
-    position: absolute;
-    top: 74%;
-    width: 80%;
-    max-width: 90%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
-    padding: 15px;
-    opacity: 0;
-    transition: opacity 2s ease-in-out;
-    display: inline-block;
-    word-wrap: break-word;
-}
         video {
             position: fixed;
             top: 0;
@@ -83,9 +72,7 @@
     </video>
     <div id="messagesContainer"></div>
     <h2 id="finalMessage">Happy Women's Day, Sri! 💖 You are incredible!</h2>
-    <div id="longMessageContainer">
-        <h3 id="longMessage">Just like this infinite butterfly curve keeps generating new colors I'll always love you in infinite ways. Keep going. Fulfill your dreams. I'm here. Always! Yours, ~Vipul/Vulpix</h3>
-    </div>
+    <h3 id="longMessage">Just like this infinite butterfly curve keeps generating new colors I'll always love you in infinite ways. Keep going. Fulfill your dreams. I'm here. Always! Yours, ~Vipul/Vulpix</h3>
     <canvas id="butterflyCanvas"></canvas>
     <script>
         const canvas = document.getElementById("butterflyCanvas");
@@ -134,7 +121,7 @@
         animate();
 
         const messages = [
-            "You are strong!", "You are loved!", "You matter!", "You are my world!", 
+            "You are strong!", "You are loved!", "You matter!", "You mean the world to someone... like me!", 
             "You inspire!", "You shine!", "Your kindness changes lives!", "Never forget your worth!",
             "You are extraordinary!", "You are capable of amazing things!", "You are powerful!"
         ];
@@ -177,7 +164,7 @@
         function showFinalMessage() {
             document.getElementById("finalMessage").style.opacity = 1;
             setTimeout(() => {
-                document.getElementById("longMessageContainer").style.opacity = 1;
+                document.getElementById("longMessage").style.opacity = 1;
             }, 2000);
         }
         
