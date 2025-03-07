@@ -15,7 +15,7 @@
         canvas { 
             display: block; 
             margin: 20px auto; 
-            background: black;
+            background: transparent;
         }
         .message {
             position: absolute;
@@ -59,7 +59,7 @@
     <div id="messagesContainer"></div>
     <h2 id="finalMessage">Happy Women's Day, Sri! 💖 You are incredible!</h2>
     <h3 id="longMessage">Dear Sri... (your long message here)</h3>
-    <canvas id="butterflyCanvas" width="500" height="500"></canvas>
+    <canvas id="butterflyCanvas"></canvas>
     <audio id="bgMusic" loop autoplay>
         <source src="Audio.mp3" type="audio/mp3">
     </audio>
@@ -67,6 +67,9 @@
     <script>
         const canvas = document.getElementById("butterflyCanvas");
         const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
         const scale = 50;
@@ -77,11 +80,14 @@
         let colorIndex = 0;
 
         function drawButterfly() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
             let x = Math.sin(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5)) * scale;
             let y = Math.cos(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5)) * scale;
             
             if (prevX !== null && prevY !== null) {
                 ctx.strokeStyle = colors[colorIndex % colors.length];
+                ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(prevX, prevY);
                 ctx.lineTo(centerX + x, centerY - y);
@@ -101,77 +107,10 @@
                 t += speed;
                 drawButterfly();
                 requestAnimationFrame(animate);
-            } else {
-                setTimeout(showFinalMessage, 2000);
             }
         }
         
         animate();
-
-        const messages = [
-            "You are strong!", "You are loved!", "You matter!", "You mean the world to someone... like me!", 
-            "You inspire!", "You shine!", "Your kindness changes lives!", "Never forget your worth!",
-            "You are extraordinary!", "You are capable of amazing things!", "You are powerful!"
-        ];
-        
-        function showMessages() {
-            const container = document.getElementById("messagesContainer");
-            let index = 0;
-            
-            function displayNextMessage() {
-                if (index >= messages.length) {
-                    setTimeout(showFinalMessage, 1000);
-                    return;
-                }
-                
-                const message = document.createElement("div");
-                message.className = "message";
-                message.innerText = messages[index];
-                
-                const positions = ["top-left", "top-right", "bottom-left", "bottom-right"];
-                const position = positions[index % positions.length];
-                
-                if (position === "top-left") {
-                    message.style.top = "10%";
-                    message.style.left = "10%";
-                } else if (position === "top-right") {
-                    message.style.top = "10%";
-                    message.style.right = "10%";
-                } else if (position === "bottom-left") {
-                    message.style.bottom = "10%";
-                    message.style.left = "10%";
-                } else if (position === "bottom-right") {
-                    message.style.bottom = "10%";
-                    message.style.right = "10%";
-                }
-                
-                message.style.color = colors[index % colors.length];
-                container.appendChild(message);
-                setTimeout(() => {
-                    message.style.opacity = 1;
-                }, 100);
-                setTimeout(() => {
-                    message.style.opacity = 0;
-                    setTimeout(() => {
-                        container.removeChild(message);
-                    }, 500);
-                }, 2000);
-                
-                setTimeout(displayNextMessage, 1000);
-                index++;
-            }
-            
-            displayNextMessage();
-        }
-
-        function showFinalMessage() {
-            document.getElementById("finalMessage").style.opacity = 1;
-            setTimeout(() => {
-                document.getElementById("longMessage").style.opacity = 1;
-            }, 2000);
-        }
-        
-        setTimeout(showMessages, 2000);
     </script>
 </body>
 </html>
