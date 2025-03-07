@@ -80,8 +80,6 @@
         let colorIndex = 0;
 
         function drawButterfly() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             let x = Math.sin(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5)) * scale;
             let y = Math.cos(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5)) * scale;
             
