@@ -57,6 +57,7 @@
         const centerY = canvas.height / 2;
         const scale = 50;
         let t = 0;
+        const speed = 0.00001; // Adjust speed here (lower = slower, higher = faster)
         const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         
         function drawButterfly() {
@@ -73,11 +74,9 @@
         }
         
         function animate() {
-            if (t < 12 * Math.PI) {
-                t += 0.1;
-                drawButterfly();
-                requestAnimationFrame(animate);
-            }
+            t += speed;
+            drawButterfly();
+            requestAnimationFrame(animate);
         }
         
         animate();
