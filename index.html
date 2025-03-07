@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Women's Day, Sri!</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        canvas { background: black; display: block; margin: 20px auto; }
+        #message { font-size: 20px; margin-top: 10px; color: purple; }
+    </style>
+</head>
+<body>
+    <h2>Happy Women's Day, Sri! 🌸</h2>
+    <canvas id="butterflyCanvas" width="500" height="500"></canvas>
+    <p id="message">You are as unique and beautiful as this butterfly curve! 💜</p>
+    
+    <script>
+        const canvas = document.getElementById("butterflyCanvas");
+        const ctx = canvas.getContext("2d");
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const scale = 50;
+        let t = 0;
+        
+        function drawButterfly() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            for (let i = 0; i <= t; i += 0.02) {
+                let x = Math.sin(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
+                let y = Math.cos(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
+                ctx.lineTo(centerX + x, centerY - y);
+            }
+            ctx.strokeStyle = "violet";
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        
+        function animate() {
+            if (t < 12 * Math.PI) {
+                t += 0.2;
+                drawButterfly();
+                requestAnimationFrame(animate);
+            }
+        }
+        
+        animate();
+    </script>
+</body>
+</html>
