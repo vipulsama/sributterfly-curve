@@ -57,20 +57,28 @@
         const centerY = canvas.height / 2;
         const scale = 50;
         let t = 0;
-        const speed = 0.04; // Adjust speed here (lower = slower, higher = faster)
+        const speed = 0.05; // Adjust speed here (lower = slower, higher = faster)
         const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
-        
+        let colorIndex = 0;
+
         function drawButterfly() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (t === 0) ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
+            let prevX = null, prevY = null;
             for (let i = 0; i <= t; i += 0.02) {
                 let x = Math.sin(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
                 let y = Math.cos(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
-                ctx.strokeStyle = colors[Math.floor(i % colors.length)];
-                ctx.lineTo(centerX + x, centerY - y);
+                if (prevX !== null && prevY !== null) {
+                    ctx.strokeStyle = colors[colorIndex % colors.length];
+                    ctx.beginPath();
+                    ctx.moveTo(prevX, prevY);
+                    ctx.lineTo(centerX + x, centerY - y);
+                    ctx.stroke();
+                }
+                prevX = centerX + x;
+                prevY = centerY - y;
             }
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            colorIndex++;
         }
         
         function animate() {
