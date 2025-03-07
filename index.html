@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Women's Day, Sri!</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+        
         body { 
             text-align: center; 
             font-family: Arial, sans-serif; 
@@ -17,7 +19,7 @@
             margin: 20px auto; 
             background: transparent;
             position: absolute;
-            top: 5%;
+            top: 8%; /* Moved slightly up */
             left: 50%;
             transform: translateX(-50%);
         }
@@ -26,9 +28,9 @@
             font-size: 20px;
             font-weight: bold;
             opacity: 0;
-            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            transition: opacity 1s ease-in-out;
             z-index: 1;
-            color: white;
+            font-family: 'Roboto', sans-serif;
         }
         #finalMessage {
             position: absolute;
@@ -46,6 +48,18 @@
             font-size: 24px;
             opacity: 0;
             transition: opacity 2s ease-in-out;
+            color: white;
+            font-family: 'Open Sans', sans-serif;
+        }
+        #longMessageContainer {
+            position: absolute;
+            top: 74%;
+            width: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6); /* Semi-transparent black */
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
         }
         video {
             position: fixed;
@@ -56,18 +70,6 @@
             object-fit: cover;
             z-index: -1;
         }
-        #playAudioButton {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background: #ff7300;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -76,29 +78,11 @@
     </video>
     <div id="messagesContainer"></div>
     <h2 id="finalMessage">Happy Women's Day, Sri! 💖 You are incredible!</h2>
-    <h3 id="longMessage">Dear Sri... (your long message here)</h3>
+    <div id="longMessageContainer">
+        <h3 id="longMessage">Just like this infinite butterfly curve keeps generating new colors I'll always love you in infinite ways. Keep going. Fulfill your dreams. I'm here. Always! Yours, ~Vipul/Vulpix</h3>
+    </div>
     <canvas id="butterflyCanvas"></canvas>
-    <audio id="bgMusic" loop>
-        <source src="Audio.mp3" type="audio/mp3">
-    </audio>
-    <button id="playAudioButton">Play Music</button>
-    
     <script>
-        const audio = document.getElementById("bgMusic");
-        const playButton = document.getElementById("playAudioButton");
-        
-        function tryPlayAudio() {
-            audio.play().catch(() => {
-                playButton.style.display = "block";
-            });
-        }
-        
-        document.addEventListener("click", tryPlayAudio);
-        playButton.addEventListener("click", () => {
-            audio.play();
-            playButton.style.display = "none";
-        });
-        
         const canvas = document.getElementById("butterflyCanvas");
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
@@ -145,7 +129,7 @@
         animate();
 
         const messages = [
-            "You are strong!", "You are loved!", "You matter!", "You mean the world to someone... like me!", 
+            "You are strong!", "You are loved!", "You matter!", "You are my world!", 
             "You inspire!", "You shine!", "Your kindness changes lives!", "Never forget your worth!",
             "You are extraordinary!", "You are capable of amazing things!", "You are powerful!"
         ];
@@ -153,17 +137,26 @@
         function showMessages() {
             const container = document.getElementById("messagesContainer");
             let index = 0;
+            const positions = [
+                { top: "10%", left: "10%" },
+                { top: "10%", right: "10%" },
+                { bottom: "10%", left: "10%" },
+                { bottom: "10%", right: "10%" }
+            ];
             
             function displayNextMessage() {
-                if (index >= messages.length) return;
+                if (index >= messages.length) {
+                    setTimeout(showFinalMessage, 1000);
+                    return;
+                }
                 
                 const message = document.createElement("div");
                 message.className = "message";
                 message.innerText = messages[index];
                 message.style.color = colors[index % colors.length];
-                message.style.top = `${10 + (index * 5)}%`;
-                message.style.left = "50%";
-                message.style.transform = "translateX(-50%)";
+                
+                let pos = positions[index % positions.length];
+                Object.assign(message.style, pos);
                 
                 container.appendChild(message);
                 setTimeout(() => message.style.opacity = 1, 100);
@@ -175,6 +168,14 @@
             
             displayNextMessage();
         }
+        
+        function showFinalMessage() {
+            document.getElementById("finalMessage").style.opacity = 1;
+            setTimeout(() => {
+                document.getElementById("longMessageContainer").style.opacity = 1;
+            }, 2000);
+        }
+        
         setTimeout(showMessages, 2000);
     </script>
 </body>
