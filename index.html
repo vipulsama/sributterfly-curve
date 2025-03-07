@@ -17,17 +17,29 @@
             margin: 20px auto; 
             background: black;
         }
-        #messageContainer {
+        .message {
             position: absolute;
-            top: 10%;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+        #finalMessage {
+            position: absolute;
+            top: 75%;
+            width: 100%;
+            font-size: 28px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+        #longMessage {
+            position: absolute;
+            top: 85%;
             width: 100%;
             font-size: 24px;
-            color: white;
-            animation: fadeInOut 5s infinite alternate;
-        }
-        @keyframes fadeInOut {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
         }
         video {
             position: fixed;
@@ -44,7 +56,9 @@
     <video autoplay loop muted>
         <source src="your-video.mp4" type="video/mp4">
     </video>
-    <h2 id="messageContainer">Happy Women's Day, Sri! 🌸</h2>
+    <div id="messagesContainer"></div>
+    <h2 id="finalMessage">Happy Women's Day, Sri! 💖 You are incredible!</h2>
+    <h3 id="longMessage">Dear Sri... (your long message here)</h3>
     <canvas id="butterflyCanvas" width="500" height="500"></canvas>
     <audio id="bgMusic" loop autoplay>
         <source src="interstellar-theme.mp3" type="audio/mp3">
@@ -57,7 +71,7 @@
         const centerY = canvas.height / 2;
         const scale = 50;
         let t = 0;
-        const speed = 0.01; // Adjust speed here (lower = slower, higher = faster)
+        const speed = 0.01;
         const colors = ["#ff0000", "#ff7300", "#ffeb00", "#47ff00", "#00ffe1", "#2b65ff", "#8000ff"];
         let prevX = null, prevY = null;
         let colorIndex = 0;
@@ -78,19 +92,86 @@
             prevY = centerY - y;
             
             if (t % (Math.PI / 4) < speed) {
-                colorIndex++; // Change color gradually over sections
+                colorIndex++;
             }
         }
         
         function animate() {
-            if (t < 12 * Math.PI) { // Ensuring a complete and smooth curve
+            if (t < 12 * Math.PI) {
                 t += speed;
                 drawButterfly();
                 requestAnimationFrame(animate);
+            } else {
+                setTimeout(showFinalMessage, 2000);
             }
         }
         
         animate();
+
+        const messages = [
+            "You are strong!", "You are loved!", "You matter!", "You mean the world to someone... like me!", 
+            "You inspire!", "You shine!", "Your kindness changes lives!", "Never forget your worth!",
+            "You are extraordinary!", "You are capable of amazing things!", "You are powerful!"
+        ];
+        
+        function showMessages() {
+            const container = document.getElementById("messagesContainer");
+            let index = 0;
+            
+            function displayNextMessage() {
+                if (index >= messages.length) {
+                    setTimeout(showFinalMessage, 1000);
+                    return;
+                }
+                
+                const message = document.createElement("div");
+                message.className = "message";
+                message.innerText = messages[index];
+                
+                const positions = ["top-left", "top-right", "bottom-left", "bottom-right"];
+                const position = positions[index % positions.length];
+                
+                if (position === "top-left") {
+                    message.style.top = "10%";
+                    message.style.left = "10%";
+                } else if (position === "top-right") {
+                    message.style.top = "10%";
+                    message.style.right = "10%";
+                } else if (position === "bottom-left") {
+                    message.style.bottom = "10%";
+                    message.style.left = "10%";
+                } else if (position === "bottom-right") {
+                    message.style.bottom = "10%";
+                    message.style.right = "10%";
+                }
+                
+                message.style.color = colors[index % colors.length];
+                container.appendChild(message);
+                setTimeout(() => {
+                    message.style.opacity = 1;
+                }, 100);
+                setTimeout(() => {
+                    message.style.opacity = 0;
+                    setTimeout(() => {
+                        container.removeChild(message);
+                    }, 500);
+                }, 2000);
+                
+                setTimeout(displayNextMessage, 1000);
+                index++;
+            }
+            
+            displayNextMessage();
+        }
+
+        function showFinalMessage() {
+            document.getElementById("finalMessage").style.opacity = 1;
+            setTimeout(() => {
+                document.getElementById("longMessage").style.opacity = 1;
+            }, 2000);
+        }
+        
+        setTimeout(showMessages, 2000);
     </script>
 </body>
 </html>
