@@ -17,30 +17,35 @@
             margin: 20px auto; 
             background: transparent;
             position: absolute;
-            top: 10%;
+            top: 5%;
             left: 50%;
             transform: translateX(-50%);
         }
-        .message, #finalMessage, #longMessage {
+        .message {
             position: absolute;
             font-size: 20px;
             font-weight: bold;
             opacity: 0;
             transition: opacity 1s ease-in-out, transform 1s ease-in-out;
             z-index: 1;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 10px;
+            color: white;
         }
         #finalMessage {
+            position: absolute;
             top: 65%;
             width: 100%;
             font-size: 28px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
         }
         #longMessage {
+            position: absolute;
             top: 75%;
             width: 100%;
             font-size: 24px;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
         }
         video {
             position: fixed;
@@ -139,12 +144,38 @@
         
         animate();
 
-        setTimeout(() => {
-            document.getElementById("finalMessage").style.opacity = "1";
-            setTimeout(() => {
-                document.getElementById("longMessage").style.opacity = "1";
-            }, 2000);
-        }, 2000);
+        const messages = [
+            "You are strong!", "You are loved!", "You matter!", "You mean the world to someone... like me!", 
+            "You inspire!", "You shine!", "Your kindness changes lives!", "Never forget your worth!",
+            "You are extraordinary!", "You are capable of amazing things!", "You are powerful!"
+        ];
+        
+        function showMessages() {
+            const container = document.getElementById("messagesContainer");
+            let index = 0;
+            
+            function displayNextMessage() {
+                if (index >= messages.length) return;
+                
+                const message = document.createElement("div");
+                message.className = "message";
+                message.innerText = messages[index];
+                message.style.color = colors[index % colors.length];
+                message.style.top = `${10 + (index * 5)}%`;
+                message.style.left = "50%";
+                message.style.transform = "translateX(-50%)";
+                
+                container.appendChild(message);
+                setTimeout(() => message.style.opacity = 1, 100);
+                setTimeout(() => message.style.opacity = 0, 2000);
+                
+                setTimeout(displayNextMessage, 1000);
+                index++;
+            }
+            
+            displayNextMessage();
+        }
+        setTimeout(showMessages, 2000);
     </script>
 </body>
 </html>
