@@ -57,34 +57,37 @@
         const centerY = canvas.height / 2;
         const scale = 50;
         let t = 0;
-        const speed = 0.04; // Adjust speed here (lower = slower, higher = faster)
-        const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
+        const speed = 0.05; // Adjust speed here (lower = slower, higher = faster)
+        const colors = ["#ff0000", "#ff7300", "#ffeb00", "#47ff00", "#00ffe1", "#2b65ff", "#8000ff"];
+        let prevX = null, prevY = null;
         let colorIndex = 0;
 
         function drawButterfly() {
-            if (t === 0) ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            let prevX = null, prevY = null;
-            for (let i = 0; i <= t; i += 0.02) {
-                let x = Math.sin(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
-                let y = Math.cos(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
-                if (prevX !== null && prevY !== null) {
-                    ctx.strokeStyle = colors[colorIndex % colors.length];
-                    ctx.beginPath();
-                    ctx.moveTo(prevX, prevY);
-                    ctx.lineTo(centerX + x, centerY - y);
-                    ctx.stroke();
-                }
-                prevX = centerX + x;
-                prevY = centerY - y;
+            let x = Math.sin(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5)) * scale;
+            let y = Math.cos(t) * (Math.exp(Math.cos(t)) - 2 * Math.cos(4 * t) - Math.pow(Math.sin(t / 12), 5)) * scale;
+            
+            if (prevX !== null && prevY !== null) {
+                ctx.strokeStyle = colors[colorIndex % colors.length];
+                ctx.beginPath();
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(centerX + x, centerY - y);
+                ctx.stroke();
             }
-            colorIndex++;
+            
+            prevX = centerX + x;
+            prevY = centerY - y;
+            
+            if (t % (Math.PI / 4) < speed) {
+                colorIndex++; // Change color gradually over sections
+            }
         }
         
         function animate() {
-            t += speed;
-            drawButterfly();
-            requestAnimationFrame(animate);
+            if (t < 12 * Math.PI) { // Ensuring a complete and smooth curve
+                t += speed;
+                drawButterfly();
+                requestAnimationFrame(animate);
+            }
         }
         
         animate();
