@@ -47,13 +47,14 @@
             width: 80%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 18px;
+            font-size: 20px;
             opacity: 0;
             transition: opacity 2s ease-in-out;
-            color: white;
+            color: blue;
             font-family: 'Open Sans', sans-serif;
             text-align: center;
             word-wrap: break-word;
+            font-style: italic;
         }
         video {
             position: fixed;
@@ -70,11 +71,19 @@
     <video autoplay loop muted>
         <source src="SunflowerSDKHWD480Clipchamp.mp4" type="video/mp4">
     </video>
+    <audio id="bgMusic" loop>
+        <source src="Audio.mp3" type="audio/mp3">
+    </audio>
     <div id="messagesContainer"></div>
     <h2 id="finalMessage">Happy Women's Day, Sri! 💖 You are incredible!</h2>
     <h3 id="longMessage">Just like this infinite butterfly curve keeps generating new colors I'll always love you in infinite ways. Keep going. Fulfill your dreams. I'm here. Always! Yours, ~Vipul/Vulpix</h3>
     <canvas id="butterflyCanvas"></canvas>
     <script>
+        const audio = document.getElementById("bgMusic");
+        document.addEventListener("click", () => {
+            audio.play();
+        });
+        
         const canvas = document.getElementById("butterflyCanvas");
         const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
