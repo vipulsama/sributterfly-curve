@@ -5,15 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Women's Day, Sri!</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        canvas { background: black; display: block; margin: 20px auto; }
-        #message { font-size: 20px; margin-top: 10px; color: purple; }
+        body { 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            background: black; 
+            color: white; 
+            overflow: hidden;
+        }
+        canvas { 
+            display: block; 
+            margin: 20px auto; 
+            background: black;
+        }
+        #messageContainer {
+            position: absolute;
+            top: 10%;
+            width: 100%;
+            font-size: 24px;
+            color: white;
+            animation: fadeInOut 5s infinite alternate;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
-    <h2>Happy Women's Day, Sri! 🌸</h2>
+    <video autoplay loop muted>
+        <source src="your-video.mp4" type="video/mp4">
+    </video>
+    <h2 id="messageContainer">Happy Women's Day, Sri! 🌸</h2>
     <canvas id="butterflyCanvas" width="500" height="500"></canvas>
-    <p id="message">You are as unique and beautiful as this butterfly curve! 💜</p>
+    <audio id="bgMusic" loop autoplay>
+        <source src="interstellar-theme.mp3" type="audio/mp3">
+    </audio>
     
     <script>
         const canvas = document.getElementById("butterflyCanvas");
@@ -22,6 +57,7 @@
         const centerY = canvas.height / 2;
         const scale = 50;
         let t = 0;
+        const colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         
         function drawButterfly() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -29,16 +65,16 @@
             for (let i = 0; i <= t; i += 0.02) {
                 let x = Math.sin(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
                 let y = Math.cos(i) * (Math.exp(Math.cos(i)) - 2 * Math.cos(4 * i) - Math.pow(Math.sin(i / 12), 5)) * scale;
+                ctx.strokeStyle = colors[Math.floor(i % colors.length)];
                 ctx.lineTo(centerX + x, centerY - y);
             }
-            ctx.strokeStyle = "violet";
             ctx.lineWidth = 2;
             ctx.stroke();
         }
         
         function animate() {
             if (t < 12 * Math.PI) {
-                t += 0.2;
+                t += 0.1;
                 drawButterfly();
                 requestAnimationFrame(animate);
             }
